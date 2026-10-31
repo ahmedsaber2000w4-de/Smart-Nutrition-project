@@ -23,27 +23,26 @@ I built the entire web frontend: all pages, routing, form validation, API integr
 
 ## Screenshots
 
-| Landing | Register / Login |
+| Register | Login |
 |---|---|
-| ![Landing](screenshots/landing.png) | ![Auth](screenshots/register-login.png) |
+| ![Register](screenshots/Register.png) | ![Login](screenshots/Login.png) |
 
-| Onboarding | Dashboard |
+| Onboarding | Home |
 |---|---|
-| ![Onboarding](screenshots/onboarding.png) | ![Dashboard](screenshots/dashboard.png) |
+| ![Onboarding](screenshots/Onboarding.png) | ![Home](screenshots/Home.png) |
 
-| Meals | Workout |
+| Generated Plan | Meals |
 |---|---|
-| ![Meals](screenshots/meals.png) | ![Workout](screenshots/workout.png) |
+| ![Generated Plan](screenshots/Generated-plan.png) | ![Meals](screenshots/Meal.png) |
 
-| Status | Progress |
+| Workout | Status |
 |---|---|
-| ![Status](screenshots/status.png) | ![Progress](screenshots/progress.png) |
+| ![Workout](screenshots/Workout.png) | ![Status](screenshots/Status.png) |
 
-| Profile |
-|---|
-| ![Profile](screenshots/profile.png) |
+| Progress | Edit Profile |
+|---|---|
+| ![Progress](screenshots/Progress.png) | ![Edit Profile](screenshots/Edit-profile.png) |
 
-## Tech Stack
 
 - React 19, React Router 7, Vite
 - HeroUI, Tailwind CSS 4, Framer Motion, Lucide Icons
