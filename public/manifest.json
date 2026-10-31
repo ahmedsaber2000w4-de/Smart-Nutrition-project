@@ -1,0 +1,11 @@
+{
+  "name": "Nutrition Smart",
+  "short_name": "Nutrition",
+  "description": "Smart nutrition & meal tracking app",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#16a34a",
+  "orientation": "portrait"
+ 
+}
