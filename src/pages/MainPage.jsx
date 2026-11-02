@@ -64,7 +64,6 @@ export default function MainPage() {
     const userObj = JSON.parse(localStorage.getItem("user") || "{}");
     setUserName(userObj.fullname || "Athlete");
 
-    // أول حاجة: نعرض الـ plan المحلي فوراً
     const localPlan = localStorage.getItem("user_active_plan");
     if (localPlan) {
       try { setPlan(JSON.parse(localPlan)); } catch (_) {}
@@ -77,7 +76,6 @@ export default function MainPage() {
     hasFetchedPlan.current = true;
     setLoadingPlan(true);
     try {
-      // ✅ الـ endpoint الصح لجلب الـ plan الحالي هو /api/current
       const res = await axios.get(`${PLAN_API}/current`, {
         headers: authHeader(),
         timeout: 15000,
@@ -93,7 +91,6 @@ export default function MainPage() {
         navigate("/login");
         return;
       }
-      // 404 or 500 = no active plan on server yet — fall back to localStorage silently
       console.warn("fetchExistingPlan:", err.response?.status, err.message);
     } finally {
       setLoadingPlan(false);
@@ -120,7 +117,6 @@ export default function MainPage() {
     if (!getToken()) { toast.error("Please log in first."); navigate("/login"); return; }
     setGenerating(true);
     try {
-      // بنبعت البروفايل في الـ body عشان الـ gp-backend يستخدمه
       const localProfile = (() => {
         try { return JSON.parse(localStorage.getItem("userProfile") || "null"); } catch { return null; }
       })();
@@ -182,7 +178,7 @@ export default function MainPage() {
   const greeting = hour < 12 ? "Good Morning" : hour < 18 ? "Good Afternoon" : "Good Evening";
 
   // ── Normalise plan shape ──
-  // meals & workouts may come as { "1": [...], "2": [...] } objects — flatten to array
+
   const rawMeals = plan?.dietPlan?.meals ?? plan?.meals ?? [];
   const meals = Array.isArray(rawMeals)
     ? rawMeals

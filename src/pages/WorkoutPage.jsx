@@ -168,7 +168,6 @@ export default function WorkoutPage() {
   const [completedList, setCompletedList] = useState([]);
   const [planMeta, setPlanMeta] = useState({ location: null, caloriesBurn: null });
 
-  // normalise: handles both array and { "1": [...] } object shapes
   const normaliseExercises = (raw) => {
     if (!raw) return [];
     const list = Array.isArray(raw) ? raw : Object.values(raw).flat();
@@ -186,7 +185,6 @@ export default function WorkoutPage() {
     setLoading(true);
     setError(null);
 
-    // 1. Try localStorage first (instant, no network)
     try {
       const localPlan = localStorage.getItem("user_active_plan");
       if (localPlan) {
@@ -232,7 +230,6 @@ export default function WorkoutPage() {
     setCompletedList((prev) => {
       if (prev.includes(title)) return prev;
       const next = [...prev, title];
-      // persist by exerciseId so StatusPage can count
       try {
         const plan = JSON.parse(localStorage.getItem("user_active_plan") || "{}");
         const allEx = plan.workouts ? Object.values(plan.workouts).flat() : [];

@@ -147,17 +147,14 @@ export default function UploadPage() {
     setError(null);
     setScreen("analyse");
     try {
-      // Convert to base64
       const base64 = await new Promise((res, rej) => {
         const reader = new FileReader();
-        // If video, we can't directly analyse — take first frame via canvas
-        // For images: direct; for videos: show message
+
         if (file.type.startsWith("image/")) {
           reader.onload = () => res(reader.result.split(",")[1]);
           reader.onerror = rej;
           reader.readAsDataURL(file);
         } else {
-          // For video files, extract first frame
           const video = document.createElement("video");
           video.src = URL.createObjectURL(file);
           video.crossOrigin = "anonymous";

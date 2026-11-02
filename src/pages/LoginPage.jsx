@@ -23,10 +23,8 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       const data = await loginApi(formData);
-      // data shape: { status, token, data: { user: { fullname, role, ... }, hasProfile } }
 
       if (data?.token) {
-        // ✅ حفظ الـ token والـ user في localStorage
         localStorage.setItem("token", data.token);
 
         const userInfo = data.data?.user || {};
@@ -46,7 +44,6 @@ export default function LoginPage() {
           if (role === "admin") {
             navigate("/admin/dashboard");
           } else if (!hasProfile) {
-            // مفيش profile → onboarding الأول
             navigate("/onboarding");
           } else {
             navigate("/home");

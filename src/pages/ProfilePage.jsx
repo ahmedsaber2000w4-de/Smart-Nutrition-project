@@ -15,11 +15,9 @@ import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import { Camera, User, Target, Activity, Pencil, X, Check } from "lucide-react";
 
-// ✅ تم التعديل: Railway هو الـ backend الشغال مش Vercel
 const AUTH_API = "https://trying-task.vercel.app";
 const GP_API   = "https://gp-backend-production-7b9a.up.railway.app/api";
 
-// ─── Default shape يتطابق مع الـ API ─────────────────────────────────────────
 const DEFAULT_PROFILE = {
   age: "",
   gender: "male",
@@ -34,7 +32,6 @@ const DEFAULT_PROFILE = {
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState(DEFAULT_PROFILE);
-  // نسخة احتياطية نرجعلها لو اليوزر ألغى التعديل
   const [savedProfile, setSavedProfile] = useState(DEFAULT_PROFILE);
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -47,7 +44,6 @@ export default function ProfilePage() {
   const fullName  = userData.fullname || "User";
   const firstName = fullName.split(" ")[0];
 
-  // ─── تحميل البروفايل ──────────────────────────────────────────────────────
   useEffect(() => {
     const savedUser = JSON.parse(localStorage.getItem("user") || "{}");
     setUserImage(savedUser.image || null);
@@ -58,7 +54,6 @@ export default function ProfilePage() {
     try {
       setIsLoading(true);
 
-      // أول حاجة: نعرض البيانات المحلية فوراً عشان مفيش loading طويل
       const localData = localStorage.getItem("userProfile");
       if (localData) {
         const parsed = JSON.parse(localData);
@@ -66,12 +61,10 @@ export default function ProfilePage() {
         setSavedProfile(parsed);
       }
 
-      // ✅ الـ endpoint الصح من الـ Postman — الآن على Railway
       const res = await axios.get(`${AUTH_API}/getProfile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      // Response: { status, data: { profile: {...}, hasProfile } }
       const fetched =
         res.data?.data?.profile ||
         res.data?.profile ||
@@ -92,12 +85,10 @@ export default function ProfilePage() {
     }
   };
 
-  // ─── حفظ التعديلات ────────────────────────────────────────────────────────
   const handleUpdate = async () => {
     try {
       setIsSaving(true);
 
-      // ✅ بنبعت uppercase عشان Vercel و Railway بيشاركوا نفس الـ DB
       const profileToSend = {
         ...profile,
         gender:           profile.gender?.toUpperCase(),
@@ -123,13 +114,11 @@ export default function ProfilePage() {
     }
   };
 
-  // ─── إلغاء التعديل ────────────────────────────────────────────────────────
   const handleCancelEdit = () => {
-    setProfile(savedProfile); // نرجع للبيانات الأصلية
+    setProfile(savedProfile);
     setIsEditing(false);
   };
 
-  // ─── تغيير الصورة ─────────────────────────────────────────────────────────
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -146,7 +135,6 @@ export default function ProfilePage() {
     reader.readAsDataURL(file);
   };
 
-  // ─── Helper: تغيير قيمة في الـ profile ───────────────────────────────────
   const updateField = (field, value) => setProfile((prev) => ({ ...prev, [field]: value }));
 
   // ─── Loading Screen ───────────────────────────────────────────────────────
@@ -321,7 +309,7 @@ export default function ProfilePage() {
                   selectedKeys={profile.fitness_goal ? [profile.fitness_goal] : ["bodybuilding"]}
                   onSelectionChange={(keys) => updateField("fitness_goal", Array.from(keys)[0])}
                 >
-                  {/* ✅ القيم دي بالضبط اللي الـ API بيتوقعها */}
+                  {}
                   <SelectItem key="bodybuilding">Build Muscle</SelectItem>
                   <SelectItem key="weight loss">Lose Weight</SelectItem>
                   <SelectItem key="maintenance">Maintain Weight</SelectItem>
@@ -365,7 +353,6 @@ export default function ProfilePage() {
                   selectedKeys={profile.equipment ? [profile.equipment] : ["at home"]}
                   onSelectionChange={(keys) => updateField("equipment", Array.from(keys)[0])}
                 >
-                  {/* ✅ القيم بالضبط زي ما الـ Postman بيبعت */}
                   <SelectItem key="at home">At Home</SelectItem>
                   <SelectItem key="gym">Gym</SelectItem>
                   <SelectItem key="full equipment">Full Equipment</SelectItem>
@@ -373,7 +360,6 @@ export default function ProfilePage() {
               </div>
             </section>
 
-            {/* ── Unsaved Changes Indicator ── */}
             {isEditing && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}

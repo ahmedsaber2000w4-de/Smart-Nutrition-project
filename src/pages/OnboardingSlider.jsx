@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 
 import { onboardingSchema } from "../schema/onboardingSchema";
 
-// ✅ الـ profile endpoints على Vercel، والـ plan generation على Railway
 const AUTH_API = "https://trying-task.vercel.app";
 const GP_API   = "https://gp-backend-production-7b9a.up.railway.app/api";
 
@@ -45,7 +44,6 @@ export default function OnboardingSlider() {
           const local = JSON.parse(localRaw);
           if (local?.age) { navigate("/main", { replace: true }); return; }
         }
-        // ✅ getProfile على Vercel
         const res = await axios.get(`${AUTH_API}/getProfile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -60,7 +58,6 @@ export default function OnboardingSlider() {
           navigate("/login");
           return;
         }
-        // 404 = مفيش بروفايل = كمّل الـ onboarding (طبيعي للـ users الجدد)
         if (err.response?.status !== 404) {
           console.error("checkExistingProfile error:", err.message);
         }
@@ -103,7 +100,6 @@ export default function OnboardingSlider() {
 
     setIsLoading(true);
 
-    // ✅ Vercel و Railway بيشاركوا نفس الـ DB — بنبعت uppercase للاتنين
     const profileData = {
       age:              Number(f.age),
       gender:           f.gender.toUpperCase(),                                                                           // "male" → "MALE"
@@ -116,7 +112,6 @@ export default function OnboardingSlider() {
       equipment:        { "gym":"FULL_GYM","at home":"AT_HOME","full equipment":"GARAGE_GYM" }[f.equipment]               ?? f.equipment.toUpperCase().replace(/ /g,"_"),
     };
 
-    // نحفظ نسخة lowercase في الـ localStorage للعرض في الـ UI
     const localProfile = {
       age:              Number(f.age),
       gender:           f.gender,
@@ -130,16 +125,13 @@ export default function OnboardingSlider() {
     };
 
     try {
-      // ✅ 1️⃣ حفظ البروفايل (uppercase — يشتغل مع Vercel و Railway)
       const addRes = await axios.post(`${AUTH_API}/addprofile`, profileData, {
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
       });
       console.log("addprofile response:", addRes.data);
 
-      // ✅ 2️⃣ تحديث hasProfile في localStorage
       localStorage.setItem("hasProfile", "true");
 
-      // ✅ 3️⃣ حفظ البروفايل محلياً (lowercase للعرض)
       const nutrition = calculateNutrition(localProfile);
       localStorage.setItem("userProfile", JSON.stringify({ ...localProfile, nutrition }));
 
