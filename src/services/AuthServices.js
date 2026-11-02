@@ -11,7 +11,6 @@ export const loginApi = async (formData) => {
   });
  
   const data = response.data;
-  // response shape: { status, token, data: { user: { fullname, email, role, ... }, hasProfile } }
  
   if (data?.token) {
     localStorage.setItem("token",      data.token);
